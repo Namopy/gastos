@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Añadir Gasto (POST)</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    .form-container { max-width: 380px; margin: 40px auto; padding: 20px; border: 1px solid #ddd; border-radius: 8px; background-color: #fff; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="form-container">
+      <h2 class="text-center">Añadir Gasto (POST)</h2>
+      <form id="expenseForm">
+        <div class="mb-3">
+          <label for="date" class="form-label">Fecha</label>
+          <input type="date" id="date" class="form-control" required>
+        </div>
+        <div class="mb-3">
+          <label for="amount" class="form-label">Importe (€)</label>
+          <input type="text" id="amount" class="form-control" placeholder="12,34 o 12.34" required>
+        </div>
+        <div class="mb-3">
+          <label for="concept" class="form-label">Concepto</label>
+          <input type="text" id="concept" class="form-control" required>
+        </div>
+        <div class="mb-3">
+          <label for="bank" class="form-label">Banco / Cuenta</label>
+          <input type="text" id="bank" class="form-control" placeholder="Openbank, BBVA, Efectivo..." required>
+        </div>
+        <div class="d-grid gap-2">
+          <button type="submit" class="btn btn-primary">Guardar</button>
+          <a href="index.html" class="btn btn-secondary">Atrás</a>
+        </div>
+      </form>
+    </div>
+  </div>
+<script>
+const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzMLpGvnGWsIUPmM-4wMIzeecafkF_z8Vpm2r0SifG9DShzFS0dQArOjp0-0BTVQSlA/exec';
+
+document.getElementById('expenseForm').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const date = document.getElementById('date').value;
+  const amount = document.getElementById('amount').value.trim();
+  const concept = document.getElementById('concept').value.trim();
+  const bank = document.getElementById('bank').value.trim();
+
+  const params = new URLSearchParams({ date, amount, concept, bank });
+
+  try {
+    const res = await fetch(SCRIPT_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8' },
+      body: params
+    });
+    const data = await res.json().catch(() => ({}));
+    if (data.ok) {
+      alert('Gasto guardado ✅');
+      e.target.reset();
+    } else {
+      alert('Error al guardar: ' + (data.error || 'desconocido'));
+    }
+  } catch (err) {
+    alert('Fallo de red: ' + err.message);
+  }
+});
+</script>
+
+</body>
+</html>
