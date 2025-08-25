@@ -24,8 +24,14 @@
         fetch("https://script.google.com/macros/s/AKfycbwn4cZwqNrLoGajrvlC8SWcT8pH9nt2GJ9gmceKJRFvcTCQkW5XghKj84A25gzIIaYl/exec?getBalance=true")
             .then(response => response.json())
             .then(data => {
-                document.getElementById('balance').textContent = `${data.balance || "No disponible"} €`;
-            })
+    const balance = Number(data.balance);
+    if (!isNaN(balance)) {
+        document.getElementById('balance').textContent = balance.toFixed(2) + " €";
+    } else {
+        document.getElementById('balance').textContent = "No disponible";
+    }
+})
+
             .catch(error => {
                 console.error("Error al obtener el saldo:", error);
                 document.getElementById('balance').textContent = "Error al cargar el saldo";
@@ -34,3 +40,4 @@
 </body>
 
 </html>
+
