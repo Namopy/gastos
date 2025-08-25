@@ -1,0 +1,16 @@
+function doGet(e) {
+    const sheet = SpreadsheetApp.openById("1kMFL6APooBEx2MtqQyC15kRJ5kQXDFP1A5FB1AV26AI").getSheetByName("Hoja 1");
+    const params = e.parameter;
+
+    if (params.getBalance) {
+        const balance = sheet.getRange("F3").getValue();
+        return ContentService.createTextOutput(JSON.stringify({ balance })).setMimeType(ContentService.MimeType.JSON);
+    } else if (params.getLatest) {
+        const rows = sheet.getLastRow();
+        const data = sheet.getRange(Math.max(1, rows - 4), 1, Math.min(rows, 5), 3).getValues();
+        return ContentService.createTextOutput(JSON.stringify(data)).setMimeType(ContentService.MimeType.JSON);
+    } else {
+        sheet.appendRow([params.date, params.amount, params.concept]);
+        return ContentService.createTextOutput(JSON.stringify({ success: true }));
+    }
+}
