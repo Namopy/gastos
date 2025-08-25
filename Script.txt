@@ -7,10 +7,10 @@ function doGet(e) {
         return ContentService.createTextOutput(JSON.stringify({ balance })).setMimeType(ContentService.MimeType.JSON);
     } else if (params.getLatest) {
         const rows = sheet.getLastRow();
-        const data = sheet.getRange(Math.max(1, rows - 4), 1, Math.min(rows, 5), 3).getValues();
+        const data = sheet.getRange(Math.max(1, rows - 4), 1, Math.min(rows, 5), 4).getValues();
         return ContentService.createTextOutput(JSON.stringify(data)).setMimeType(ContentService.MimeType.JSON);
     } else {
-        sheet.appendRow([params.date, params.amount, params.concept]);
+        sheet.appendRow([params.date, params.amount, params.concept, p.bank]);
         return ContentService.createTextOutput(JSON.stringify({ success: true }));
     }
 }

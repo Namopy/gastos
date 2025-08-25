@@ -20,17 +20,18 @@
                     <th>Fecha</th>
                     <th>Importe</th>
                     <th>Concepto</th>
+                    <th>Banco</th> <!-- NUEVO -->
                 </tr>
             </thead>
             <tbody id="movementsTable">
-                <tr><td colspan="3">Cargando datos...</td></tr>
+                <tr><td colspan="4">Cargando datos...</td></tr>
             </tbody>
         </table>
         <a href="index.html" class="btn btn-secondary">Atrás</a>
     </div>
 
     <script>
-        fetch("https://script.google.com/macros/s/AKfycbwn4cZwqNrLoGajrvlC8SWcT8pH9nt2GJ9gmceKJRFvcTCQkW5XghKj84A25gzIIaYl/exec?getLatest=5")
+        fetch("https://script.google.com/macros/s/AKfycbwhzO4ciRg2mMu2nd0TCxdpksfTw2RJQgQyxFKHBiLNSQgXIRg_wGS9mnrIdEQFj9dN/exec?getLatest=5")
             .then(response => response.json())
             .then(data => {
                 const table = document.getElementById('movementsTable');
@@ -40,6 +41,7 @@
                         let formattedDate = 'Sin fecha';
                         let formattedAmount = 'Sin importe';
                         let concept = row[2] || 'Sin concepto';
+                        let bank = row[3] || '-';                    // NUEVO
 
                         // Formatear la fecha
                         try {
@@ -65,18 +67,19 @@
                             <td>${formattedDate}</td>
                             <td>€${formattedAmount}</td>
                             <td>${concept}</td>
+                            <td>${bank}</td>                           <!-- NUEVO -->
+
                         `;
                         table.appendChild(tr);
                     });
                 } else {
-                    table.innerHTML = '<tr><td colspan="3">No hay datos disponibles</td></tr>';
+                    table.innerHTML = '<tr><td colspan="4">No hay datos disponibles</td></tr>';
                 }
             })
             .catch(error => {
                 console.error("Error al obtener los movimientos:", error);
-                document.getElementById('movementsTable').innerHTML = '<tr><td colspan="3">Error al cargar los datos</td></tr>';
+                document.getElementById('movementsTable').innerHTML = '<tr><td colspan="4">Error al cargar los datos</td></tr>';
             });
     </script>
 </body>
 </html>
-

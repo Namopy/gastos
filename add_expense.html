@@ -47,6 +47,13 @@
                 <label for="concept" class="form-label">Concepto</label>
                 <input type="text" class="form-control" id="concept" required>
             </div>
+            <!-- nuevo campo -->
+            <div class="mb-3">
+                <label for="bank" class="form-label">Banco</label>
+                <input type="text" class="form-control" id="bank" required>
+            </div>
+
+
             <div class="text-center">
                 <button type="submit" class="btn btn-success">Aceptar</button>
                 <a href="index.html" class="btn btn-secondary mt-2">Atrás</a>
@@ -67,15 +74,17 @@
             event.preventDefault();
 
             const date = document.getElementById('date').value;
-            const amount = parseFloat(document.getElementById('amount').value).toFixed(2);
+            const amount = parseFloat(document.getElementById('amount').value).toFixed(2).replace('.',',');
             const concept = document.getElementById('concept').value;
+            const bank = document.getElementById('bank').value;   // NUEVO
 
-            fetch("https://script.google.com/macros/s/AKfycbwn4cZwqNrLoGajrvlC8SWcT8pH9nt2GJ9gmceKJRFvcTCQkW5XghKj84A25gzIIaYl/exec?" + 
-                new URLSearchParams({ date, amount, concept }), { method: "GET" })
+
+            fetch("https://script.google.com/macros/s/AKfycbwhzO4ciRg2mMu2nd0TCxdpksfTw2RJQgQyxFKHBiLNSQgXIRg_wGS9mnrIdEQFj9dN/exec?" + 
+                new URLSearchParams({ date, amount, concept, bank }), { method: "GET" })
             .then(response => response.json())
             .then(data => {
                 alert("Gasto añadido con éxito");
-                window.location.href = "index_saldo.html";
+                window.location.href = "index.html";
             })
             .catch(error => {
                 alert("Error al enviar los datos");
@@ -85,4 +94,3 @@
     </script>
 </body>
 </html>
-
